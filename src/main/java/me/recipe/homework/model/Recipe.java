@@ -1,24 +1,17 @@
 package me.recipe.homework.model;
 
 import javax.swing.*;
+import java.util.List;
 
 public class Recipe {
-    private String id;
     private final String name;
     private final int time;
-    private String [] ingredientLine;
-    private String [] step;
+    private List<Ingredient> ingredients;
+    private List<String>steps;
 
-    public Recipe(String id, String name, int time, String[] ingredientLine, String[] step) {
-        this.id = id;
+    public Recipe(String name, int time) {
         this.name = name;
         this.time = time;
-        this.ingredientLine = ingredientLine;
-        this.step = step;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getName() {
@@ -29,19 +22,19 @@ public class Recipe {
         return time;
     }
 
-    public String[] getIngredientLine() {
-        return ingredientLine;
+    public List<Ingredient> getIngredients() {
+        return ingredients;
     }
 
-    public void setIngredientLine(String[] ingredientLine) {
-        this.ingredientLine = ingredientLine;
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public String[] getStep() {
-        return step;
+    public List<String> getSteps() {
+        return steps;
     }
 
-    public void setStep(String[] step) {
-        this.step = step;
+    public void setSteps(List<String> steps) {
+        this.steps = steps;
     }
 }

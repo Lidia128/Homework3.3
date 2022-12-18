@@ -1,22 +1,18 @@
 package me.recipe.homework.model;
 
+import jdk.jfr.DataAmount;
+
 import javax.swing.*;
 
 public class Ingredient {
-    private String id;
     private String name;
     private int quantityIngredient;
     private String unit;
 
-    public Ingredient(String id, String name, int quantityIngredient, String unit) {
-        this.id = id;
+    public Ingredient(String name, int quantityIngredient, String unit) {
         this.name = name;
         this.quantityIngredient = quantityIngredient;
         this.unit = unit;
-    }
-
-    public String getId() {
-        return id;
     }
     public String getName() {
         return name;

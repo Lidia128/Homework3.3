@@ -4,10 +4,9 @@ import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.IngredientService;
 import org.apache.coyote.Request;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/ingredient")
@@ -18,8 +17,12 @@ public class IngredientController {
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
+    @GetMapping
+    public Collection <Ingredient>getAllIngredient (){
+        return ingredientService.getAll();
+    }
     @PostMapping
-    public Ingredient createIngredient (@RequestBody Ingredient ingredient){
-        return this.ingredientService.addIngredient(ingredient);
+    public Ingredient addIngredient (@RequestBody Ingredient ingredient){
+        return this.ingredientService.addNewIngredient(ingredient);
     }
 }
