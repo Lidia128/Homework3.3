@@ -10,10 +10,12 @@ import java.util.TreeMap;
 public class RecipeServiceImpl implements RecipeService {
     private static Map<Integer, Recipe> recipes = new TreeMap<>();
     private static int id = 0;
+
     @Override
     public Collection<Recipe> getAll() {
         return recipes.values();
     }
+
     @Override
     public Recipe addNewRecipe(Recipe recipe) {
         if (recipes.containsKey(id)) {
@@ -23,6 +25,7 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return recipe;
     }
+
     @Override
     public Recipe getRecipeById(int id) {
         if (recipes.containsKey(id)) {
@@ -31,4 +34,24 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException("Нет такого рецепта");
         }
     }
+    @Override
+    public Recipe editRecipe(long id, Recipe recipe) {
+        if (recipes.containsKey(id)) {
+            recipes.put(id, recipe);
+            return recipe;
+        }
+        return null;
+        }
+    @Override
+    public boolean deleteRecipe(long id){
+        if (recipes.containsKey(id)) {
+            recipes.remove(id);
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public void deleteAllRecipe(){
+      recipes = new TreeMap<>();
+        }
 }

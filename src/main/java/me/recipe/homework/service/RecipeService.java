@@ -11,10 +11,11 @@ import java.util.Map;
 
 public interface RecipeService {
     Collection<Recipe> getAll();
-
     Recipe addNewRecipe(Recipe recipe);
-
     Recipe getRecipeById(int idRecipe);
+    Recipe editRecipe (long id, Recipe recipe);
+    boolean deleteRecipe(long id);
+    void deleteAllRecipe();
 }
 
 
