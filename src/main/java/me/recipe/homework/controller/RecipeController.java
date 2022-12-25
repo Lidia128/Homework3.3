@@ -30,7 +30,7 @@ public class RecipeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> editRecipe(@PathVariable long id, @RequestBody Recipe recipe) {
-        Recipe recipe = recipeService.editRecipe(id, recipe);
+        Recipe updatedRecipe = recipeService.editRecipe(id, recipe);
         if (recipe == null) {
             return ResponseEntity.notFound().build();
         }

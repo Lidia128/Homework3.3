@@ -37,7 +37,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {
-            recipes.put(id, recipe);
+            recipes.put((int) id, recipe);
             return recipe;
         }
         return null;
