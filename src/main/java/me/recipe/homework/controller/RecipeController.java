@@ -31,10 +31,10 @@ public class RecipeController {
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> editRecipe(@PathVariable long id, @RequestBody Recipe recipe) {
         Recipe updatedRecipe = recipeService.editRecipe(id, recipe);
-        if (recipe == null) {
+       if (recipe == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(recipe);
+        return ResponseEntity.ok(updatedRecipe);
     }
     @DeleteMapping ("/{id}")
     public ResponseEntity<Void> deleteRecipe (@PathVariable long id){
