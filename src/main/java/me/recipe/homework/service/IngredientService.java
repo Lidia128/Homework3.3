@@ -16,5 +16,8 @@ public interface IngredientService {
     Collection<Ingredient>getAll();
         Ingredient addNewIngredient(Ingredient ingredient);
         Ingredient getIngredientById (int idIngredient);
+        Ingredient editIngredient(long id, Ingredient ingredient);
+        boolean deleteIngredient(long id);
+        void deleteAllIngredient();
     }
 

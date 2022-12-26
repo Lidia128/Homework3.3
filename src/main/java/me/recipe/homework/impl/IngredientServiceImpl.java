@@ -1,6 +1,7 @@
 package me.recipe.homework.impl;
 
 import me.recipe.homework.model.Ingredient;
+import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.IngredientService;
 
 import java.util.Collection;
@@ -30,5 +31,25 @@ public class IngredientServiceImpl implements IngredientService {
         } else {
             throw new RuntimeException("Нет такого ингредиента");
         }
+    }
+    @Override
+    public Ingredient editIngredient(long id, Ingredient ingredient) {
+        if (ingredients.containsKey(id)) {
+            ingredients.put((int) id, ingredient);
+            return ingredient;
+        }
+        return null;
+    }
+    @Override
+    public boolean deleteIngredient(long id){
+        if (ingredients.containsKey(id)) {
+            ingredients.remove(id);
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public void deleteAllIngredient(){
+        ingredients = new TreeMap<>();
     }
 }
