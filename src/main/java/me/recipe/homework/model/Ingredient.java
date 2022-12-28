@@ -1,7 +1,6 @@
 package me.recipe.homework.model;
 
 import jdk.jfr.DataAmount;
-
 import javax.swing.*;
 
 public class Ingredient {

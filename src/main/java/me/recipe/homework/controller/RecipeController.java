@@ -1,5 +1,6 @@
 package me.recipe.homework.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.RecipeService;
@@ -10,7 +11,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/recipe")
-
+@Tag(name = "Рецепты", description = "Список рецептов для приготовления")
 public class RecipeController {
     private final RecipeService recipeService;
 
