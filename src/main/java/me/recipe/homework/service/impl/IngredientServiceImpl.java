@@ -8,6 +8,11 @@ import me.recipe.homework.service.FilesIngredientService;
 import me.recipe.homework.service.IngredientService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,6 +42,20 @@ public class IngredientServiceImpl implements IngredientService {
         } else {
             throw new RuntimeException("Нет такого ингредиента");
         }
+    }
+    @Override
+    public Path createIngredient(Ingredient ingredient){
+        Ingredient ingredient1 = ingredients.getOrDefault(ingredient, new Map<>());
+        Path path = filesIngredientService.createTempFile("report");
+        for (Ingredient value : ingredients.values()) {
+            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
+                writer.append(ingredient.getName() + " : " + ingredient.getQuantityIngredient() + " " + ingredient.getUnit());
+                writer.append("\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return path;
     }
     public Ingredient editIngredient(long id, Ingredient ingredient) {
         if (ingredients.containsKey(id)) {

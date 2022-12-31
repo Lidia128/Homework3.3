@@ -9,10 +9,13 @@ import me.recipe.homework.service.RecipeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
+
 @Service
 public class RecipeServiceImpl implements RecipeService {
     final private FilesRecipeService filesRecipeService;
@@ -44,6 +47,18 @@ public class RecipeServiceImpl implements RecipeService {
         } else {
             throw new RuntimeException("Нет такого рецепта");
         }
+    }
+    @Override
+    public Path createRicepe(Recipe recipe) throws IOException {
+        Recipe recipe1 = recipes.getOrDefault(recipe, new Map<>());
+        Path path = filesRecipeService.createTempFile("report");
+        for (Recipe value : recipes.values()) {
+            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
+                writer.append(recipe.getIngredients() + " : " + recipe.getSteps() + " " + recipe.getTime());
+                writer.append("\n");
+            }
+        }
+        return path;
     }
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {

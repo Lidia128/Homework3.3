@@ -12,9 +12,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.RecipeService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 
 @RestController
@@ -26,6 +34,7 @@ public class RecipeController {
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
+
     @Operation(
             summary = "Поиск рецепта по id"
     )
@@ -52,8 +61,22 @@ public class RecipeController {
     })
 
     @GetMapping
-    public Collection<Recipe> getAllRecipe() {
-        return recipeService.getAll();
+    public Collection<Object> getAllRecipe() {
+        try {
+           Path path = RecipeService.createRecipeReport(recipe);
+            if (Files.size(path) == 0)){
+                return ResponseEntity.noContent().build();
+            }
+                InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
+                return ResponseEntity.ok()
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .contentLength(Files.size(path))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachmet; filename=\"" + recipe + "-report.txt\"")
+                        .body(resource);
+                  }catch (IOException e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build(e.toString());
+       }
     }
     @Operation(
             summary = "Все рецепты"
