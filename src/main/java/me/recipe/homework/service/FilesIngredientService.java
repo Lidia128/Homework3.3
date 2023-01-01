@@ -7,6 +7,7 @@ public interface FilesIngredientService {
     boolean saveToFile(String json);
 
     String readFromFile();
+
     File getDataFile();
 
     Path createTempFile(String suffix);

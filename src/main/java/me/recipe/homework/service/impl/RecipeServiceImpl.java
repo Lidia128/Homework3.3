@@ -21,17 +21,20 @@ public class RecipeServiceImpl implements RecipeService {
     final private FilesRecipeService filesRecipeService;
     private static Map<Integer, Recipe> recipes = new TreeMap<>();
     private static int id = 0;
+
     public RecipeServiceImpl(FilesRecipeService filesRecipeService) {
         this.filesRecipeService = filesRecipeService;
     }
+
     @PostConstruct
-    private void init (){
+    private void init() {
         readFromFile();
     }
 
     public Collection<Recipe> getAll() {
         return recipes.values();
     }
+
     public Recipe addNewRecipe(Recipe recipe) {
         if (recipes.containsKey(id)) {
             throw new RuntimeException("Не может добавить рецепт с таким же id");
@@ -41,6 +44,7 @@ public class RecipeServiceImpl implements RecipeService {
         saveToFile();
         return recipe;
     }
+
     public Recipe getRecipeById(int id) {
         if (recipes.containsKey(id)) {
             return recipes.get(id);
@@ -48,18 +52,12 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException("Нет такого рецепта");
         }
     }
+
     @Override
     public Path createRicepe(Recipe recipe) throws IOException {
-        Recipe recipe1 = recipes.getOrDefault(recipe, new Map<>());
-        Path path = filesRecipeService.createTempFile("report");
-        for (Recipe value : recipes.values()) {
-            try (Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
-                writer.append(recipe.getIngredients() + " : " + recipe.getSteps() + " " + recipe.getTime());
-                writer.append("\n");
-            }
-        }
-        return path;
+        return null;
     }
+
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {
             recipes.put((int) id, recipe);
@@ -67,18 +65,21 @@ public class RecipeServiceImpl implements RecipeService {
             return recipe;
         }
         return null;
-        }
-    public boolean deleteRecipe(long id){
+    }
+
+    public boolean deleteRecipe(long id) {
         if (recipes.containsKey(id)) {
             recipes.remove(id);
             return true;
         }
         return false;
     }
-    public void deleteAllRecipe(){
-      recipes = new TreeMap<>();
-        }
-    private void saveToFile (){
+
+    public void deleteAllRecipe() {
+        recipes = new TreeMap<>();
+    }
+
+    private void saveToFile() {
         try {
             String json = new ObjectMapper().writeValueAsString(recipes);
             filesRecipeService.saveToFile(json);
@@ -86,10 +87,11 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException(e);
         }
     }
-    private void readFromFile(){
+
+    private void readFromFile() {
         String json = filesRecipeService.readFromFile();
         try {
-           recipes = new ObjectMapper().readValue(json, new TypeReference<>() {
+            recipes = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Recipe>>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

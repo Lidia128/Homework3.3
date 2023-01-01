@@ -26,6 +26,7 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
             return false;
         }
     }
+
     @Override
     public String readFromFile() {
         try {
@@ -34,18 +35,21 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
             throw new RuntimeException(e);
         }
     }
+
     @Override
-    public File getDataFile(){
+    public File getDataFile() {
         return new File(dataFilePath + "/" + dataFileName);
     }
+
     @Override
-    public Path createTempFile (String suffix){
+    public Path createTempFile(String suffix) {
         try {
-           return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
+            return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public boolean cleanDateFile() {
         try {

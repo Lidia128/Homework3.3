@@ -61,23 +61,10 @@ public class RecipeController {
     })
 
     @GetMapping
-    public Collection<Object> getAllRecipe() {
-        try {
-           Path path = RecipeService.createRecipeReport(recipe);
-            if (Files.size(path) == 0)){
-                return ResponseEntity.noContent().build();
-            }
-                InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
-                return ResponseEntity.ok()
-                        .contentType(MediaType.TEXT_PLAIN)
-                        .contentLength(Files.size(path))
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachmet; filename=\"" + recipe + "-report.txt\"")
-                        .body(resource);
-                  }catch (IOException e){
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build(e.toString());
-       }
+    public Collection<Recipe> getAllRecipe() {
+        return recipeService.getAll();
     }
+
     @Operation(
             summary = "Все рецепты"
     )
@@ -94,11 +81,11 @@ public class RecipeController {
             )
     }
     )
-
     @PostMapping
     public Recipe addRecipe(@RequestBody Recipe recipe) {
         return this.recipeService.addNewRecipe(recipe);
     }
+
     @Operation(
             summary = "Редактирование рецепта по id"
     )
@@ -118,15 +105,15 @@ public class RecipeController {
             )
     }
     )
-
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> editRecipe(@PathVariable long id, @RequestBody Recipe recipe) {
         Recipe updatedRecipe = recipeService.editRecipe(id, recipe);
-       if (recipe == null) {
+        if (recipe == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedRecipe);
     }
+
     @Operation(
             summary = "Удаление рецепта по id"
     )
@@ -142,15 +129,16 @@ public class RecipeController {
             )
     }
     )
-    @DeleteMapping ("/{id}")
-    public ResponseEntity<Void> deleteRecipe (@PathVariable long id){
-    if(recipeService.deleteRecipe(id)){
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRecipe(@PathVariable long id) {
+        if (recipeService.deleteRecipe(id)) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.notFound().build();
-    }
+
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllRecipe (){
+    public ResponseEntity<Void> deleteAllRecipe() {
         recipeService.deleteAllRecipe();
         return ResponseEntity.ok().build();
     }

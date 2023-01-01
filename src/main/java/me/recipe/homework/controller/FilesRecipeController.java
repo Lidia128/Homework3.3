@@ -21,10 +21,10 @@ public class FilesRecipeController {
     public FilesRecipeController(FilesRecipeService filesRecipeService) {
         this.filesRecipeService = filesRecipeService;
     }
-    @GetMapping(value = "/export")
+
+    @GetMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> dowloadDataFile() throws FileNotFoundException {
         File file = filesRecipeService.getDataFile();
-
         if (file.exists()) {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
@@ -36,16 +36,17 @@ public class FilesRecipeController {
             return ResponseEntity.noContent().build();
         }
     }
-    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> uploadDataFile (@RequestParam MultipartFile file){
+
+    @PostMapping(value = "/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadRecipeDataFile(@RequestParam MultipartFile file) {
         filesRecipeService.cleanDateFile();
         File dataFile = filesRecipeService.getDataFile();
 
-        try (FileOutputStream fos = new FileOutputStream(dataFile)){
+        try (FileOutputStream fos = new FileOutputStream(dataFile)) {
             IOUtils.copy(file.getInputStream(), fos);
             return ResponseEntity.ok().build();
-        }catch (IOException e) {
-           e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }

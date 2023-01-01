@@ -20,10 +20,10 @@ public class FilesIngredientController {
     public FilesIngredientController(FilesIngredientService filesIngredientService) {
         this.filesIngredientService = filesIngredientService;
     }
-    @GetMapping(value = "/export")
+
+    @GetMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> dowloadDataFile() throws FileNotFoundException {
         File file = filesIngredientService.getDataFile();
-
         if (file.exists()) {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
             return ResponseEntity.ok()
@@ -35,15 +35,15 @@ public class FilesIngredientController {
             return ResponseEntity.noContent().build();
         }
     }
-    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> uploadDataFile (@RequestParam MultipartFile file){
+
+    @PostMapping(value = "/ingredients", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadIngredientDataFile(@RequestParam MultipartFile file) {
         filesIngredientService.cleanDateFile();
         File dataFile = filesIngredientService.getDataFile();
-
-        try (FileOutputStream fos = new FileOutputStream(dataFile)){
+        try (FileOutputStream fos = new FileOutputStream(dataFile)) {
             IOUtils.copy(file.getInputStream(), fos);
             return ResponseEntity.ok().build();
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

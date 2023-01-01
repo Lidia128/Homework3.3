@@ -14,14 +14,18 @@ import java.util.Map;
 @Service
 
 public interface IngredientService {
-    Collection<Ingredient>getAll();
-        Ingredient addNewIngredient(Ingredient ingredient);
-        Ingredient getIngredientById (int idIngredient);
+    Collection<Ingredient> getAll();
+
+    Ingredient addNewIngredient(Ingredient ingredient);
+
+    Ingredient getIngredientById(int idIngredient);
 
     Path createIngredient(Ingredient ingredient);
 
     Ingredient editIngredient(long id, Ingredient ingredient);
-        boolean deleteIngredient(long id);
-        void deleteAllIngredient();
-    }
+
+    boolean deleteIngredient(long id);
+
+    void deleteAllIngredient();
+}
 

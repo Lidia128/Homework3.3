@@ -14,6 +14,7 @@ import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.IngredientService;
 import me.recipe.homework.service.RecipeService;
 import org.apache.coyote.Request;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -60,24 +61,9 @@ public class IngredientController {
                     description = "Такого ингредиент нет"
             )
     })
-
     @GetMapping()
-    public Collection<Object> getAllIngredient() {
-        try {
-            Path path = IngredientService.createIngredientReport(ingredient);
-            if (Files.size(path) == 0)){
-                return ResponseEntity.noContent().build();
-            }
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
-            return ResponseEntity.ok()
-                    .contentType(MediaType.TEXT_PLAIN)
-                    .contentLength(Files.size(path))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachmet; filename=\"" + ingredient + "-report.txt\"")
-                    .body(resource);
-        }catch (IOException e){
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().build(e.toString());
-        }
+    public Collection<Ingredient> getAllIngredient() {
+        return ingredientService.getAll();
     }
     @Operation(
             summary = "Все ингредиенты"
@@ -95,12 +81,10 @@ public class IngredientController {
             )
     }
     )
-
     @PostMapping
     public Ingredient addIngredient(@RequestBody Ingredient ingredient) {
         return this.ingredientService.addNewIngredient(ingredient);
     }
-
     @Operation(
             summary = "Редактирование ингредиента по id"
     )
@@ -128,7 +112,6 @@ public class IngredientController {
         }
         return ResponseEntity.ok(updatedIngredient);
     }
-
     @Operation(
             summary = "Удаление ингредиента по id"
     )
@@ -151,7 +134,6 @@ public class IngredientController {
         }
         return ResponseEntity.notFound().build();
     }
-
     @DeleteMapping
     public ResponseEntity<Void> deleteAllIngredient() {
         ingredientService.deleteAllIngredient();
