@@ -12,16 +12,28 @@ import java.util.Map;
 @Service
 
 public interface RecipeService {
+
     Collection<Recipe> getAll();
-    Recipe addNewRecipe(Recipe recipe);
-    Recipe getRecipeById(int idRecipe);
+
+    Recipe addRecipe(Recipe recipe);
+
+    Recipe getRecipe(int id);
 
     Path createRicepe(Recipe recipe) throws IOException;
 
-    Recipe editRecipe (long id, Recipe recipe);
+    Recipe editRecipe(long id, Recipe recipe);
+
+    Recipe updateRecipe(int id, Recipe recipe);
+
+    Recipe removeRecipe(int id);
+
     boolean deleteRecipe(long id);
+
     void deleteAllRecipe();
+
+
 }
+
 
 
 

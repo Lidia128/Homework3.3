@@ -17,7 +17,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 @Service
-public class RecipeServiceImpl implements RecipeService {
+public abstract class RecipeServiceImpl implements RecipeService {
     final private FilesRecipeService filesRecipeService;
     private static Map<Integer, Recipe> recipes = new TreeMap<>();
     private static int id = 0;
