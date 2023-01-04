@@ -17,7 +17,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 @Service
-public abstract class RecipeServiceImpl implements RecipeService {
+public class RecipeServiceImpl implements RecipeService {
     final private FilesRecipeService filesRecipeService;
     private static Map<Integer, Recipe> recipes = new TreeMap<>();
     private static int id = 0;
@@ -33,6 +33,16 @@ public abstract class RecipeServiceImpl implements RecipeService {
 
     public Collection<Recipe> getAll() {
         return recipes.values();
+    }
+
+    @Override
+    public Recipe addRecipe(Recipe recipe) {
+        return null;
+    }
+
+    @Override
+    public Recipe getRecipe(int id) {
+        return null;
     }
 
     public Recipe addNewRecipe(Recipe recipe) {
@@ -64,6 +74,16 @@ public abstract class RecipeServiceImpl implements RecipeService {
             saveToFile();
             return recipe;
         }
+        return null;
+    }
+
+    @Override
+    public Recipe updateRecipe(int id, Recipe recipe) {
+        return null;
+    }
+
+    @Override
+    public Recipe removeRecipe(int id) {
         return null;
     }
 
