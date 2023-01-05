@@ -32,11 +32,9 @@ import java.util.Collection;
 @Tag(name = "Ингредиенты", description = "необходимые для приготовления блюда")
 public class IngredientController {
     private final IngredientService ingredientService;
-
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
-
     @Operation(
             summary = "Поиск ингредиента по id"
     )

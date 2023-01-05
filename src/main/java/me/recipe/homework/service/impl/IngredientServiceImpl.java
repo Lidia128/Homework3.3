@@ -22,15 +22,12 @@ public class IngredientServiceImpl implements IngredientService {
     final private FilesIngredientService filesIngredientService;
     private static Map<Integer, Ingredient> ingredients = new TreeMap<>();
     private static int id = 0;
-
     public IngredientServiceImpl(FilesIngredientService filesIngredientService) {
         this.filesIngredientService = filesIngredientService;
     }
-
     public Collection<Ingredient> getAll() {
         return ingredients.values();
     }
-
     public Ingredient addNewIngredient(Ingredient ingredient) {
         if (ingredients.containsKey(id)) {
             throw new RuntimeException("Не может добавить ингредиент с таким же id");

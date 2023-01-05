@@ -21,30 +21,24 @@ public class RecipeServiceImpl implements RecipeService {
     final private FilesRecipeService filesRecipeService;
     private static Map<Integer, Recipe> recipes = new TreeMap<>();
     private static int id = 0;
-
     public RecipeServiceImpl(FilesRecipeService filesRecipeService) {
         this.filesRecipeService = filesRecipeService;
     }
-
     @PostConstruct
     private void init() {
         readFromFile();
     }
-
     public Collection<Recipe> getAll() {
         return recipes.values();
     }
-
     @Override
     public Recipe addRecipe(Recipe recipe) {
         return null;
     }
-
     @Override
     public Recipe getRecipe(int id) {
         return null;
     }
-
     public Recipe addNewRecipe(Recipe recipe) {
         if (recipes.containsKey(id)) {
             throw new RuntimeException("Не может добавить рецепт с таким же id");
@@ -54,7 +48,6 @@ public class RecipeServiceImpl implements RecipeService {
         saveToFile();
         return recipe;
     }
-
     public Recipe getRecipeById(int id) {
         if (recipes.containsKey(id)) {
             return recipes.get(id);
@@ -62,12 +55,10 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException("Нет такого рецепта");
         }
     }
-
     @Override
     public Path createRicepe(Recipe recipe) throws IOException {
         return null;
     }
-
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {
             recipes.put((int) id, recipe);
@@ -76,17 +67,14 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return null;
     }
-
     @Override
     public Recipe updateRecipe(int id, Recipe recipe) {
         return null;
     }
-
     @Override
     public Recipe removeRecipe(int id) {
         return null;
     }
-
     public boolean deleteRecipe(long id) {
         if (recipes.containsKey(id)) {
             recipes.remove(id);
@@ -94,11 +82,9 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return false;
     }
-
     public void deleteAllRecipe() {
         recipes = new TreeMap<>();
     }
-
     private void saveToFile() {
         try {
             String json = new ObjectMapper().writeValueAsString(recipes);
@@ -107,7 +93,6 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException(e);
         }
     }
-
     private void readFromFile() {
         String json = filesRecipeService.readFromFile();
         try {
