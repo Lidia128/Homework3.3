@@ -11,9 +11,9 @@ import java.nio.file.Path;
 
 @Service
 public class FilesIngredientServiceImpl implements FilesIngredientService {
-    @Value("${path.to.data.file}")
+    @Value("${path.to.ingredient.data.file}")
     private String dataFilePath;
-    @Value("${name.of.data.fale}")
+    @Value("${name.of.ingredient.data.fale}")
     private String dataFileName;
 
     @Override

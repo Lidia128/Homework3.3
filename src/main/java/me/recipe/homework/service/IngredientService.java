@@ -10,15 +10,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-@Service
-
 public interface IngredientService {
     Collection<Ingredient> getAll();
 
     Ingredient addNewIngredient(Ingredient ingredient);
 
-    Ingredient getIngredientById(int idIngredient);
+    Ingredient getIngredientById(int id);
 
     Path createIngredient(Ingredient ingredient);
 

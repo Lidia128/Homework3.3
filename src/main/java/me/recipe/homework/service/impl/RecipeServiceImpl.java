@@ -85,6 +85,12 @@ public class RecipeServiceImpl implements RecipeService {
     public void deleteAllRecipe() {
         recipes = new TreeMap<>();
     }
+
+    @Override
+    public Path createRecipesFile() {
+        return null;
+    }
+
     private void saveToFile() {
         try {
             String json = new ObjectMapper().writeValueAsString(recipes);
