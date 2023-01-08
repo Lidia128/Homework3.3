@@ -69,7 +69,7 @@ public class FilesRecipeController {
     @GetMapping("/recipesInFile")
     public ResponseEntity<InputStreamResource> getRecipesInTextFile() {
         try {
-            Path path = (Path) recipeService.createRecipesFile();
+            Path path = recipeService.createRecipesFile();
             if (Files.size (path) == 0) {
                 return ResponseEntity.noContent().build();
             }
