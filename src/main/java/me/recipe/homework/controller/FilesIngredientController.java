@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/ingredient.files")
 public class FilesIngredientController {
     private final FilesIngredientService filesIngredientService;
 
@@ -27,7 +27,7 @@ public class FilesIngredientController {
             description = "в формате json"
     )
 
-    @GetMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/ingreient.export", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> dowloadDataFile() throws FileNotFoundException {
         File file = filesIngredientService.getDataFile();
         if (file.exists()) {

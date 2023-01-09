@@ -12,12 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Path;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/recipe.files")
 public class FilesRecipeController {
     private final FilesRecipeService filesRecipeService;
     private final RecipeService recipeService;
@@ -30,7 +30,7 @@ public class FilesRecipeController {
             summary = "Выведение файла с рецептами",
             description = "в формате json"
     )
-    @GetMapping(value = "/export", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/recipe.export", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InputStreamResource> dowloadDataFile() throws FileNotFoundException {
         File file = filesRecipeService.getDataFile();
         if (file.exists()) {
