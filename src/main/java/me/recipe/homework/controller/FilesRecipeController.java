@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @RestController
-@RequestMapping("/recipe.files")
+@RequestMapping("/recipe/files")
 public class FilesRecipeController {
     private final FilesRecipeService filesRecipeService;
     private final RecipeService recipeService;

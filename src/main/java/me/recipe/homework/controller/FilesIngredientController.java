@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 
 @RestController
-@RequestMapping("/ingredient.files")
+@RequestMapping("/ingredient/files")
 public class FilesIngredientController {
     private final FilesIngredientService filesIngredientService;
 
