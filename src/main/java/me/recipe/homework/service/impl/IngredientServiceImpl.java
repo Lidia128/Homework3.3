@@ -8,9 +8,15 @@ import me.recipe.homework.service.FilesIngredientService;
 import me.recipe.homework.service.IngredientService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+
 @Service
 public class IngredientServiceImpl implements IngredientService {
     final private FilesIngredientService filesIngredientService;
@@ -31,6 +37,7 @@ public class IngredientServiceImpl implements IngredientService {
         saveToFile();
         return ingredient;
     }
+
     public Ingredient getIngredientById(int id) {
         if (ingredients.containsKey(id)) {
             return ingredients.get(id);
@@ -38,6 +45,12 @@ public class IngredientServiceImpl implements IngredientService {
             throw new RuntimeException("Нет такого ингредиента");
         }
     }
+
+    @Override
+    public Path createIngredient(Ingredient ingredient) {
+        return null;
+    }
+
     public Ingredient editIngredient(long id, Ingredient ingredient) {
         if (ingredients.containsKey(id)) {
             ingredients.put((int) id, ingredient);
@@ -46,17 +59,20 @@ public class IngredientServiceImpl implements IngredientService {
         saveToFile();
         return null;
     }
-     public boolean deleteIngredient(long id){
+
+    public boolean deleteIngredient(long id) {
         if (ingredients.containsKey(id)) {
             ingredients.remove(id);
             return true;
         }
         return false;
     }
-     public void deleteAllIngredient(){
+
+    public void deleteAllIngredient() {
         ingredients = new TreeMap<>();
     }
-    private void saveToFile (){
+
+    private void saveToFile() {
         try {
             String json = new ObjectMapper().writeValueAsString(ingredients);
             filesIngredientService.saveToFile(json);
@@ -64,10 +80,11 @@ public class IngredientServiceImpl implements IngredientService {
             throw new RuntimeException(e);
         }
     }
-    private void readFromFile(){
+
+    private void readFromFile() {
         String json = filesIngredientService.readFromFile();
         try {
-            ingredients = new ObjectMapper().readValue(json, new TypeReference<>() {
+            ingredients = new ObjectMapper().readValue(json, new TypeReference<TreeMap<Integer, Ingredient>>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

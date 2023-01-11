@@ -12,10 +12,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.IngredientService;
+import me.recipe.homework.service.RecipeService;
 import org.apache.coyote.Request;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 
 @RestController
@@ -23,11 +32,9 @@ import java.util.Collection;
 @Tag(name = "Ингредиенты", description = "необходимые для приготовления блюда")
 public class IngredientController {
     private final IngredientService ingredientService;
-
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
     }
-
     @Operation(
             summary = "Поиск ингредиента по id"
     )
@@ -52,12 +59,10 @@ public class IngredientController {
                     description = "Такого ингредиент нет"
             )
     })
-
     @GetMapping()
     public Collection<Ingredient> getAllIngredient() {
         return ingredientService.getAll();
     }
-
     @Operation(
             summary = "Все ингредиенты"
     )
@@ -74,12 +79,10 @@ public class IngredientController {
             )
     }
     )
-
     @PostMapping
     public Ingredient addIngredient(@RequestBody Ingredient ingredient) {
         return this.ingredientService.addNewIngredient(ingredient);
     }
-
     @Operation(
             summary = "Редактирование ингредиента по id"
     )
@@ -107,7 +110,6 @@ public class IngredientController {
         }
         return ResponseEntity.ok(updatedIngredient);
     }
-
     @Operation(
             summary = "Удаление ингредиента по id"
     )
@@ -130,7 +132,6 @@ public class IngredientController {
         }
         return ResponseEntity.notFound().build();
     }
-
     @DeleteMapping
     public ResponseEntity<Void> deleteAllIngredient() {
         ingredientService.deleteAllIngredient();

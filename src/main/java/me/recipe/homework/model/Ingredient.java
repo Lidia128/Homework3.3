@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.swing.*;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
