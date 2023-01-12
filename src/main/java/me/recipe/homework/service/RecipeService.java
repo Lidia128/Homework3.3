@@ -28,8 +28,9 @@ public interface RecipeService {
 
     void deleteAllRecipe();
 
-
     Path createRecipesFile();
+
+    byte[] exportTxt();
 }
 
 

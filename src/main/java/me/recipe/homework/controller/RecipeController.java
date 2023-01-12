@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.RecipeService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -143,4 +144,5 @@ public class RecipeController {
     public ResponseEntity<Recipe> deleteRecipe(@PathVariable("id") int id) {
         return ResponseEntity.ok().body(service.removeRecipe(id));
     }
+
 }
