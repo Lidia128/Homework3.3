@@ -21,7 +21,7 @@ import java.util.TreeMap;
 public class IngredientServiceImpl implements IngredientService {
     final private FilesIngredientService filesIngredientService;
     private static Map<Integer, Ingredient> ingredients = new TreeMap<>();
-    private static int id = 0;
+    static int id = 0;
     public IngredientServiceImpl(FilesIngredientService filesIngredientService) {
         this.filesIngredientService = filesIngredientService;
     }

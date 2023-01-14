@@ -6,6 +6,8 @@ import java.nio.file.Path;
 public interface FilesRecipeService {
     boolean saveToFile(String json);
 
+    byte[] exportTxt();
+
     String readFromFile();
 
     File getDataFile();
