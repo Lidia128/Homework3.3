@@ -20,10 +20,6 @@ import static me.recipe.homework.service.impl.IngredientServiceImpl.id;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
-
-    public RecipeServiceImpl(RecipeService recipeService) {
-    }
-
     @PostConstruct
     private void init() {
         readFromFile();
@@ -35,12 +31,12 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe addRecipe(Recipe recipe) {
-        return null;
+        return recipe;
     }
 
     @Override
     public Recipe getRecipe(int id) {
-        return null;
+        return id;
     }
 
     public Recipe addNewRecipe(Recipe recipe) {
@@ -64,21 +60,20 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Path createRicepe(Recipe recipe) throws IOException {
-        return null;
+        return recipe;
     }
 
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {
             recipes.put((int) id, recipe);
             saveToFile();
-            return recipe;
         }
-        return null;
+        return recipe;
     }
 
     @Override
     public Recipe updateRecipe(int id, Recipe recipe) {
-        return null;
+        return id++, recipe;
     }
 
     @Override
@@ -100,7 +95,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Path createRecipesFile() {
-        return null;
+        return (Path) recipes;
     }
 
     @Override

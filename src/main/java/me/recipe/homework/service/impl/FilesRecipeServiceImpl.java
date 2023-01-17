@@ -22,27 +22,13 @@ import java.util.TreeMap;
 
 @Service
 public class FilesRecipeServiceImpl implements FilesRecipeService {
-    final private FilesRecipeService filesRecipeService;
     static Map<Integer, Recipe> recipes = new TreeMap<>();
-    private static int id = 0;
-    private final Path pathToTxtTemplate;
+
     @Value("${path.to.recipe.data.file}")
     private String dataFilePath;
     @Value("${name.of.recipe.data.fale}")
     private String dataFileName;
 
-    public FilesRecipeServiceImpl(FilesRecipeService filesRecipeService) {
-        this.filesRecipeService = filesRecipeService;
-        try {
-            this.pathToTxtTemplate = Paths.get(RecipeServiceImpl.class.getResource("recipeTemplate.txt").toURI());
-        } catch (InvalidPathException e) {
-            e.printStackTrace();
-            throw e;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
     @Override
     public boolean saveToFile(String json) {
         try {

@@ -12,7 +12,7 @@ public interface RecipeService {
     }
 
     static String readFromFile() {
-        return null;
+        return readFromFile();
     }
     Collection<Recipe> getAll();
 
