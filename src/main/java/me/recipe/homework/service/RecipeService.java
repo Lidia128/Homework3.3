@@ -20,7 +20,7 @@ public interface RecipeService {
 
     Recipe getRecipe(int id);
 
-    Path createRicepe(Recipe recipe) throws IOException;
+    void createRicepe(Recipe recipe) throws IOException;
 
     Recipe editRecipe(long id, Recipe recipe);
 

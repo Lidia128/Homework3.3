@@ -3,20 +3,16 @@ package me.recipe.homework.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.RecipeService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 import static me.recipe.homework.service.impl.FilesRecipeServiceImpl.recipes;
-import static me.recipe.homework.service.impl.IngredientServiceImpl.id;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -29,7 +25,7 @@ public class RecipeServiceImpl implements RecipeService {
         return recipes.values();
     }
 
-    @Override
+
     public Recipe addRecipe(Recipe recipe) {
         return recipe;
     }
@@ -59,8 +55,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Path createRicepe(Recipe recipe) throws IOException {
-        return recipe;
+    public void createRicepe(Recipe recipe) throws IOException {
+        return path;
     }
 
     public Recipe editRecipe(long id, Recipe recipe) {
@@ -73,7 +69,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe updateRecipe(int id, Recipe recipe) {
-        return id++, recipe;
+        return null;
     }
 
     @Override
