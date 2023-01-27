@@ -9,16 +9,30 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
-import static me.recipe.homework.service.impl.FilesRecipeServiceImpl.recipes;
 
+@SuppressWarnings("ALL")
 @Service
 public class RecipeServiceImpl implements RecipeService {
+    private static int id = 0;
+    private Map<Integer, Recipe> recipes;
+
+    private final Path pathToTextTemplate;
+
+    public RecipeServiceImpl(Path pathToTextTemplate) throws URISyntaxException {
+        this.pathToTextTemplate = Paths.get(RecipeServiceImpl.class.getResource("recipesTemple.txt").toURI());
+    }
+
     @PostConstruct
     private void init() {
-        readFromFile();
+//        readFromFile();
+        recipes = new TreeMap<>();
     }
 
     public Collection<Recipe> getAll() {
@@ -27,22 +41,16 @@ public class RecipeServiceImpl implements RecipeService {
 
 
     public Recipe addRecipe(Recipe recipe) {
+        if (recipes.containsValue(recipe)) {
+            throw new RuntimeException("Не может добавить рецепт, уже есть");
+        }
+        recipes.put(++id, recipe);
         return recipe;
     }
 
     @Override
-    public Recipe getRecipe(int id) {
-        return id;
-    }
-
-    public Recipe addNewRecipe(Recipe recipe) {
-        int id = 0;
-        if (recipes.containsKey(id)) {
-            throw new RuntimeException("Не может добавить рецепт с таким же id");
-        } else {
-            recipes.put(id++, recipe);
-        }
-        saveToFile();
+    public Recipe getRecipe(Integer id) {
+        Recipe recipe = recipes.get(id);
         return recipe;
     }
 
@@ -52,11 +60,6 @@ public class RecipeServiceImpl implements RecipeService {
         } else {
             throw new RuntimeException("Нет такого рецепта");
         }
-    }
-
-    @Override
-    public void createRicepe(Recipe recipe) throws IOException {
-        return path;
     }
 
     public Recipe editRecipe(long id, Recipe recipe) {
@@ -107,6 +110,7 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException(e);
         }
     }
+
     private void readFromFile() {
         String json = RecipeService.readFromFile();
         try {

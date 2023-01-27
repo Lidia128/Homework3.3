@@ -18,9 +18,7 @@ public interface RecipeService {
 
     Recipe addRecipe(Recipe recipe);
 
-    Recipe getRecipe(int id);
-
-    void createRicepe(Recipe recipe) throws IOException;
+    Recipe getRecipe(Integer id);
 
     Recipe editRecipe(long id, Recipe recipe);
 
