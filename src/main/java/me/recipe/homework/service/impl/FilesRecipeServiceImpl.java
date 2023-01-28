@@ -22,26 +22,17 @@ import java.util.TreeMap;
 
 @Service
 public class FilesRecipeServiceImpl implements FilesRecipeService {
-    @Value("${path.to.recipe.data.file}")
-    private String dataFilePath;
-    @Value("${name.of.recipe.data.fale}")
-    private String dataFileName;
 
-    /**
-     * Метод должен сохранять цепет (откуда берется рецепт  и как должен он его сохранять)
-     * @param json
-     * @return
-     */
+
     @Override
     public boolean saveToFile(String json) {
-        try {
-            cleanDateFile();
-            Files.writeString(Path.of(dataFilePath, dataFileName), json);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        return false;
     }
+    @Override
+    public byte[] exportTxt() {
+        return new byte[0];
+    }
+
     @Override
     public String readFromFile() {
         try {
@@ -51,11 +42,6 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
         }
     }
     @Override
-    public File getDataFile() {
-        return new File(dataFilePath + "/" + dataFileName);
-    }
-
-    @Override
     public Path createTempFile(String suffix) {
         try {
             return Files.createTempFile(Path.of(dataFilePath), "tempFile", suffix);
@@ -63,47 +49,5 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public boolean cleanDateFile() {
-        try {
-            Path path = Path.of(dataFilePath, dataFileName);
-            Files.deleteIfExists(path);
-            Files.createFile(path);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    @Override
-    public byte[] exportTxt() {
-        try {
-            String template = Files.readString(Path.of(dataFilePath, dataFileName), StandardCharsets.UTF_8);
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Recipe recipe : recipe.values()) {
-                StringBuilder ingredients = new StringBuilder();
-                StringBuilder steps = new StringBuilder();
-                for (Ingredient ingredient : recipe.getIngredients()) {
-                    ingredients.append(" - ").append(ingredient).append("\n");
-                }
-                int stepCounter = 1;
-                for (String step : recipe.getSteps()){
-                    steps.append(stepCounter++).append(". ").append(step).append("\n");
-                }
-                String recipeData = template.replace("%name%", recipe.getName())
-                        .replace("%time%", String.valueOf(recipe.getTime())
-                                .replace("%ingredients%", ingredients.toString())
-                                .replace("%steps%", steps.toString()));
-                stringBuilder.append(recipeData).append("\n\n\n");
-            }
-            return stringBuilder.toString().getBytes(StandardCharsets.UTF_8);
-            return template.getBytes(StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
 }
 

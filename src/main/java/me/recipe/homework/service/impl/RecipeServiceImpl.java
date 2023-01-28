@@ -3,11 +3,14 @@ package me.recipe.homework.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.RecipeService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +27,10 @@ public class RecipeServiceImpl implements RecipeService {
     private Map<Integer, Recipe> recipes;
 
     private final Path pathToTextTemplate;
+    @Value("${path.to.recipe.data.file}")
+    private String dataFilePath;
+    @Value("${name.of.recipe.data.fale}")
+    private String dataFileName;
 
     public RecipeServiceImpl(Path pathToTextTemplate) throws URISyntaxException {
         this.pathToTextTemplate = Paths.get(RecipeServiceImpl.class.getResource("recipesTemple.txt").toURI());
@@ -53,7 +60,6 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipe = recipes.get(id);
         return recipe;
     }
-
     public Recipe getRecipeById(int id) {
         if (recipes.containsKey(id)) {
             return recipes.get(id);
@@ -61,7 +67,6 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException("Нет такого рецепта");
         }
     }
-
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {
             recipes.put((int) id, recipe);
@@ -69,7 +74,6 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return recipe;
     }
-
     @Override
     public Recipe updateRecipe(int id, Recipe recipe) {
         return null;
@@ -79,7 +83,6 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe removeRecipe(int id) {
         return null;
     }
-
     public boolean deleteRecipe(long id) {
         if (recipes.containsKey(id)) {
             recipes.remove(id);
@@ -87,21 +90,67 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return false;
     }
-
     public void deleteAllRecipe() {
         recipes = new TreeMap<>();
     }
-
     @Override
     public Path createRecipesFile() {
         return (Path) recipes;
     }
-
+    @Override
+    public File getDataFile() {
+        return new File(dataFilePath + "/" + dataFileName);
+    }
+    @Override
+    public boolean cleanDateFile() {
+        try {
+            Path path = Path.of(dataFilePath, dataFileName);
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Override
+    public boolean saveToFile(String json) {
+        try {
+            cleanDateFile();
+            Files.writeString(Path.of(dataFilePath, dataFileName), json);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
     @Override
     public byte[] exportTxt() {
-        return new byte[0];
+        try {
+            String template = Files.readString(Path.of(dataFilePath, dataFileName), StandardCharsets.UTF_8);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Recipe recipe : recipe.values()) {
+                StringBuilder ingredients = new StringBuilder();
+                StringBuilder steps = new StringBuilder();
+                for (Ingredient ingredient : recipe.getIngredients()) {
+                    ingredients.append(" - ").append(ingredient).append("\n");
+                }
+                int stepCounter = 1;
+                for (String step : recipe.getSteps()){
+                    steps.append(stepCounter++).append(". ").append(step).append("\n");
+                }
+                String recipeData = template.replace("%name%", recipe.getName())
+                        .replace("%time%", String.valueOf(recipe.getTime())
+                                .replace("%ingredients%", ingredients.toString())
+                                .replace("%steps%", steps.toString()));
+                stringBuilder.append(recipeData).append("\n\n\n");
+            }
+            return stringBuilder.toString().getBytes(StandardCharsets.UTF_8);
+            return template.getBytes(StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
-
     private void saveToFile() {
         try {
             String json = new ObjectMapper().writeValueAsString(recipes);
@@ -110,7 +159,6 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException(e);
         }
     }
-
     private void readFromFile() {
         String json = RecipeService.readFromFile();
         try {
