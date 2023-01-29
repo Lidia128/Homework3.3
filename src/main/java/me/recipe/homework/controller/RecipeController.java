@@ -157,7 +157,7 @@ public class RecipeController {
             return ResponseEntity.ok()
                     .contentType(MediaType.TEXT_PLAIN)
                     .contentLength(bytes.length)
-                    .header(HttpHeaders.CONTENT_DISPOSITION."attachment; filename = \"info.txt\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename = \"info.txt\"")
                     .body(bytes);
     }
 

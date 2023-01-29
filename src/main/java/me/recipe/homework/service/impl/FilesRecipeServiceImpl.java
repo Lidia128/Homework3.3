@@ -23,7 +23,6 @@ import java.util.TreeMap;
 @Service
 public class FilesRecipeServiceImpl implements FilesRecipeService {
 
-
     @Override
     public boolean saveToFile(String json) {
         return false;
@@ -41,6 +40,12 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public File getDataFile() {
+        return null;
+    }
+
     @Override
     public Path createTempFile(String suffix) {
         try {
@@ -48,6 +53,11 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public boolean cleanDateFile() {
+        return false;
     }
 }
 

@@ -33,8 +33,7 @@ public interface RecipeService {
 
     boolean cleanDateFile();
 
-    static void saveToFile(String json) {
-    }
+    static boolean saveToFile(String json);
 
     boolean saveToFile(String json);
 
