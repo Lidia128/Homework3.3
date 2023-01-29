@@ -22,6 +22,10 @@ import java.util.TreeMap;
 
 @Service
 public class FilesRecipeServiceImpl implements FilesRecipeService {
+    @Value("${path.to.recipe.data.file}")
+    private String dataFilePath;
+    @Value("${name.of.recipe.data.fale}")
+    private String dataFileName;
 
     @Override
     public boolean saveToFile(String json) {

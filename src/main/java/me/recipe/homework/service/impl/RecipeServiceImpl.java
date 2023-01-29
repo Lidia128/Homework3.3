@@ -25,27 +25,19 @@ import java.util.*;
 public class RecipeServiceImpl implements RecipeService {
     private static int id = 0;
     private Map<Integer, Recipe> recipes;
-
     private final Path pathToTextTemplate;
-    @Value("${path.to.recipe.data.file}")
-    private String dataFilePath;
-    @Value("${name.of.recipe.data.fale}")
-    private String dataFileName;
 
     public RecipeServiceImpl(Path pathToTextTemplate) throws URISyntaxException {
         this.pathToTextTemplate = Paths.get(RecipeServiceImpl.class.getResource("recipesTemple.txt").toURI());
     }
-
     @PostConstruct
     private void init() {
 //        readFromFile();
         recipes = new TreeMap<>();
     }
-
     public Collection<Recipe> getAll() {
         return recipes.values();
     }
-
 
     public Recipe addRecipe(Recipe recipe) {
         if (recipes.containsValue(recipe)) {
@@ -54,13 +46,11 @@ public class RecipeServiceImpl implements RecipeService {
         recipes.put(++id, recipe);
         return recipe;
     }
-
     @Override
     public Recipe getRecipe(Integer id) {
         Recipe recipe = recipes.get(id);
         return recipe;
     }
-
     public Recipe getRecipeById(int id) {
         if (recipes.containsKey(id)) {
             return recipes.get(id);
@@ -68,7 +58,6 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException("Нет такого рецепта");
         }
     }
-
     public Recipe editRecipe(long id, Recipe recipe) {
         if (recipes.containsKey(id)) {
             recipes.put((int) id, recipe);
@@ -76,7 +65,6 @@ public class RecipeServiceImpl implements RecipeService {
         }
         return recipe;
     }
-
     @Override
     public Recipe updateRecipe(int id, Recipe recipe) {
         return null;
@@ -102,17 +90,14 @@ public class RecipeServiceImpl implements RecipeService {
     public Path createRecipesFile() {
         return null;
     }
-
     @Override
     public File getDataFile() {
         return null;
     }
-
     @Override
     public boolean cleanDateFile() {
         return false;
     }
-
     @Override
     public boolean saveToFile(String json) {
         try {
@@ -154,7 +139,7 @@ public class RecipeServiceImpl implements RecipeService {
     private void saveToFile() {
         try {
             String json = new ObjectMapper().writeValueAsString(recipes);
-            RecipeService.saveToFile(json);
+            this.saveToFile(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
