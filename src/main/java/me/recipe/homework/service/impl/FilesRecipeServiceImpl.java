@@ -1,8 +1,5 @@
 package me.recipe.homework.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.FilesRecipeService;
@@ -11,30 +8,20 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
-import java.util.TreeMap;
 
 @Service
 public class FilesRecipeServiceImpl implements FilesRecipeService {
     @Value("${path.to.recipe.data.file}")
     private String dataFilePath;
-    @Value("${name.of.recipe.data.fale}")
+    @Value("${name.of.recipe.data.file}")
     private String dataFileName;
-
-    @Override
-    public boolean saveToFile(String json) {
-        return false;
-    }
-    @Override
-    public byte[] exportTxt() {
-        return new byte[0];
-    }
+    @Value("${path.to.recipe.txt.file}")
+    private String dataFilePathTxt;
+    @Value("${name.of.recipe.txt.file}")
+    private String dataFileNameTxt;
 
     @Override
     public String readFromFile() {
@@ -47,8 +34,12 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
 
     @Override
     public File getDataFile() {
-        return null;
-    }
+        return new File(dataFilePath + "/" + dataFileName);}
+
+    @Override
+    public File getDataFileTxt() {
+        return new File(dataFilePathTxt + "/" + dataFileNameTxt);}
+
 
     @Override
     public Path createTempFile(String suffix) {
@@ -63,5 +54,22 @@ public class FilesRecipeServiceImpl implements FilesRecipeService {
     public boolean cleanDateFile() {
         return false;
     }
+
+    @Override
+    public boolean saveToFile(String json) {
+        try {
+            cleanDateFile();
+            Files.writeString(Path.of(dataFilePath, dataFileName), json);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public byte[] exportTxt() {
+        return new byte[0];
+    }
+
 }
 

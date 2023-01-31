@@ -33,9 +33,9 @@ public interface RecipeService {
 
     boolean cleanDateFile();
 
-    static boolean saveToFile(String json);
-
-    boolean saveToFile(String json);
+    static boolean saveToFile(String json) {
+        return false;
+    }
 
     byte[] exportTxt();
 }

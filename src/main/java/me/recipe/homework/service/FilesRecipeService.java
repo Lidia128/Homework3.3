@@ -12,6 +12,8 @@ public interface FilesRecipeService {
 
     File getDataFile();
 
+    File getDataFileTxt();
+
     Path createTempFile(String suffix);
 
     boolean cleanDateFile();
