@@ -3,7 +3,6 @@ package me.recipe.homework.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.recipe.homework.model.Ingredient;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.FilesRecipeService;
 import me.recipe.homework.service.RecipeService;
@@ -11,9 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -23,14 +19,9 @@ import java.util.*;
 public class RecipeServiceImpl implements RecipeService {
 
     private final FilesRecipeService filesRecipeService;
-    private static int id = 0;
-    private Map<Integer, Recipe> recipes;
-    private final Path pathToTextTemplate;
 
-    public RecipeServiceImpl(FilesRecipeService filesRecipeService, Path pathToTextTemplate) {
-        this.filesRecipeService = filesRecipeService;
-        this.pathToTextTemplate = pathToTextTemplate;
-    }
+
+
     @PostConstruct
     private void init() {
 //        readFromFile();
@@ -72,7 +63,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe updateRecipe(int id, Recipe recipe){
+    public Recipe updateRecipe(int id, Recipe recipe) {
         Recipe serviceRecipe = recipes.get(id);
         serviceRecipe.setName(recipe.getName());
         serviceRecipe.setTime(recipe.getTime());
