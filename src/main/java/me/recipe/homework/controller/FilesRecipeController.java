@@ -101,4 +101,18 @@ public class FilesRecipeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = \"info.txt\"")
                 .body(bytes);
     }
+    @GetMapping("/export/txt")
+    public ResponseEntity<InputStreamResource> downloadFileRecipeTxt() throws FileNotFoundException {
+        File file = filesRecipeService.getDataFile();
+        if (file.exists()) {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = \"RecipesLog.txt\"")
+                    .body(resource);
+        }else{
+            return ResponseEntity.noContent().build();
+        }
+    }
 }
