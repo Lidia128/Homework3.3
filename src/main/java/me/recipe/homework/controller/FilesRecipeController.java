@@ -26,6 +26,7 @@ public class FilesRecipeController {
         this.filesRecipeService = filesRecipeService;
         this.recipeService = recipeService;
     }
+
     @Operation(
             summary = "Выведение файла с рецептами",
             description = "в формате json"
@@ -44,6 +45,7 @@ public class FilesRecipeController {
             return ResponseEntity.noContent().build();
         }
     }
+
     @Operation(
             summary = "Загрузить свой файл с рецептами",
             description = "файл любого формата"
@@ -62,6 +64,7 @@ public class FilesRecipeController {
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
     @Operation(
             summary = "Скачать все рецепты",
             description = "в файле формата .txt"
@@ -70,7 +73,7 @@ public class FilesRecipeController {
     public ResponseEntity<InputStreamResource> getRecipesInTextFile() {
         try {
             Path path = recipeService.createRecipesFile();
-            if (Files.size (path) == 0) {
+            if (Files.size(path) == 0) {
                 return ResponseEntity.noContent().build();
             }
             InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
@@ -84,5 +87,32 @@ public class FilesRecipeController {
             return ResponseEntity.internalServerError().build();
         }
 
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportTxt() {
+        byte[] bytes = recipeService.exportTxt();
+        if (bytes == null){
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .contentLength(bytes.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = \"info.txt\"")
+                .body(bytes);
+    }
+    @GetMapping("/export/txt")
+    public ResponseEntity<InputStreamResource> downloadFileRecipeTxt() throws FileNotFoundException {
+        File file = filesRecipeService.getDataFile();
+        if (file.exists()) {
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(file.length())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = \"RecipesLog.txt\"")
+                    .body(resource);
+        }else{
+            return ResponseEntity.noContent().build();
+        }
     }
 }

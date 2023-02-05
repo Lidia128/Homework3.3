@@ -1,22 +1,21 @@
 package me.recipe.homework.service;
 
 import me.recipe.homework.model.Recipe;
-import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+import java.io.File;
 import java.nio.file.Path;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
 public interface RecipeService {
 
+    static String readFromFile() {
+        return readFromFile();
+    }
     Collection<Recipe> getAll();
 
     Recipe addRecipe(Recipe recipe);
 
-    Recipe getRecipe(int id);
-
-    Path createRicepe(Recipe recipe) throws IOException;
+    Recipe getRecipe(Integer id);
 
     Recipe editRecipe(long id, Recipe recipe);
 
@@ -28,8 +27,17 @@ public interface RecipeService {
 
     void deleteAllRecipe();
 
-
     Path createRecipesFile();
+
+    File getDataFile();
+
+    boolean cleanDateFile();
+
+    static boolean saveToFile(String json) {
+        return false;
+    }
+
+    byte[] exportTxt();
 }
 
 

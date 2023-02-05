@@ -9,6 +9,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.recipe.homework.model.Recipe;
 import me.recipe.homework.service.RecipeService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +19,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/recipes")
-@Tag(name = "Рецепты", description = "Список рецептов для приготовления")
+@Tag(name = "Recipes", description = "Список рецептов для приготовления")
 public class RecipeController {
     private final RecipeService service;
 
@@ -24,7 +27,7 @@ public class RecipeController {
         this.service = service;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Поиск рецепта по id",
             description = "Поиск осуществляется по id"
@@ -35,7 +38,7 @@ public class RecipeController {
                     description = "Рецепт найден",
                     content = {
                             @Content(
-                                    mediaType = "aplication/json"
+                                    mediaType = "application/json"
                             )
                     }
             ),
@@ -45,8 +48,9 @@ public class RecipeController {
                     content = {}
             )
     })
-    public ResponseEntity<Recipe> getRecipe(@PathVariable int id) {
-        return ResponseEntity.ok().body(service.getRecipe(id));
+    public ResponseEntity<Recipe> getRecipe(@PathVariable("id") Integer id) {
+        Recipe recipe = service.getRecipe(id);
+        return ResponseEntity.ok(recipe);
     }
 
     @PostMapping
@@ -143,4 +147,18 @@ public class RecipeController {
     public ResponseEntity<Recipe> deleteRecipe(@PathVariable("id") int id) {
         return ResponseEntity.ok().body(service.removeRecipe(id));
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportTxt() {
+        byte[] bytes = service.exportTxt();
+            if (bytes == null){
+                return ResponseEntity.internalServerError().build();
+        }
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(bytes.length)
+                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename = \"info.txt\"")
+                    .body(bytes);
+    }
+
 }

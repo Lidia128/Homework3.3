@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public class FilesIngredientServiceImpl implements FilesIngredientService {
     @Value("${path.to.ingredient.data.file}")
     private String dataFilePath;
-    @Value("${name.of.ingredient.data.fale}")
+    @Value("${name.of.ingredient.data.file}")
     private String dataFileName;
 
     @Override
